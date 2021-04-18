@@ -24,5 +24,5 @@ The `config_sample.php` file has to be renamed to `config.php`. It contains all 
 ```
 
 ## Authors
-Sebastian Damian Romero Chavero, 32303
-Nils Schlegel, 32067
+- Sebastian Damian Romero Chavero, 32303
+- Nils Schlegel, 32067
