@@ -1,6 +1,9 @@
 <?php
+/*  
+ *  Contains all necessary settings
+ */
 
-// 
+// Databank Settings
 define('DBHOST','localhost');
 define('DBUSER','username');
 define('DBPASS','password');

@@ -4,20 +4,20 @@
  */
 
 class caTracker{
-  private var $key;   // Tracker key
-  private var $time;  // Satellite Time
-  private var $lon;   // GPS Longitude
-  private var $lat;   // GPS Latitude
-  private var $gsm;   // GSM-Localization
-  private var $moni;  // MONI
+  private $key;   // Tracker key
+  private $time;  // Satellite Time
+  private $lon;   // GPS Longitude
+  private $lat;   // GPS Latitude
+  private $gsm;   // GSM-Localization
+  private $moni;  // MONI
 
   public function __construct(string $input){
     $this->gsm = '';
   }
-  public getGSM(){
+  public function getGSM(){
     return $this->gsm;
   }
-  public setGSM(int $_val){
+  public function setGSM($_val){
     $this->gsm = $_val;
   }
   
