@@ -1,0 +1,30 @@
+#GSM-Localization: 5 45 1 0 E-Plus;
+#MONI: N1 77 E720 E796 980 -74dbm 25 19; (CID in decimal 59286)
+#MONI: N2 70 E720 98A4 685 -75dbm 30 24; (CID in decimal 39076)
+#MONI: N3 74 E720 4B56 982 -79dbm 20 14; (CID in decimal 19286)
+#MONI: N4 36 E720 4D2E 669 -81dbm 24 18; (CID in decimal 19758)
+#MONI: N5 75 E720 9A7F 690 -82dbm 23 17; (CID in decimal 39551)
+#MONI: N6 31 E720 8B39 984 -87dbm 18 12; (CID in decimal 35641)
+
+
+#GSM-Localization: #MONI: S 74 E720 9976 1022 -60dbm 45 0 1 0 E-Plus;
+#MONI: N1 FF FFFF 0000 980 -76dbm -1 -1;
+#MONI: N2 FF FFFF 0000 685 -79dbm -1 -1;
+#MONI: N3 FF FFFF 0000 1024 -111dbm -1 -1;
+#MONI: N4 FF FFFF 0000 1024 -111dbm -1 -1;
+#MONI: N5 FF FFFF 0000 1024 -111dbm -1 -1;
+#MONI: N6 FF FFFF 0000 1024 -111dbm -1 -1;
+
+
+#MONI: Cell BSIC LAC CellId ARFCN Power C1 C2 (Ta RxQual PLMN)
+
+BSIC: Base Station Identity Code
+LAC: Location Area Code (59168)
+CID: CellId
+ARFCN: Absolute radio-frequency channel number (for calculating frequencies http://www.cellmapper.net/arfcn)
+
+
+MCC (Mobile Country Code): 262 (Germany)
+MNC (Mobile  Code): 3 (o2)
+
+https://www.rui.de/eng/nobbiglossar.html
