@@ -16,6 +16,7 @@ class Tracker{
   // Longitude E (using W result has to be negated)
   private function DMStoDD($_val)
   {
+      if ($_val == NULL || !isset($_val['deg']) || !isset($_val['min']) || !isset($_val['sec']) || !isset($_val['dir'])) return NULL;
       // Converting DMS ( Degrees / minutes / seconds ) to decimal format
       $result = $_val['deg']+((($_val['min']*60)+($_val['sec']))/3600);
       return ($_val['dir']=='N'||$_val['dir']=='E' ? $result : $result*-1);
@@ -23,10 +24,11 @@ class Tracker{
 
   // lat NS ($dec>0 ? 'N' : 'S')
   // lon EW ($dec>0 ? 'E' : 'W')
-  private function DDtoDMS($dec)
+  private function DDtoDMS($_val)
   {
+      if ($_val == NULL) return NULL;
       // Converts decimal format to DMS ( Degrees / minutes / seconds ) 
-      $vars = explode(".",$dec);
+      $vars = explode(".",$_val);
       $deg = $vars[0];
       $tempma = "0.".$vars[1];
 
@@ -37,14 +39,16 @@ class Tracker{
       return array("deg"=>$deg,"min"=>$min,"sec"=>$sec);
   }
 
-  private function STRtoDMS($str)
+  private function STRtoDMS($_val)
   {
-    preg_match('/(.*)([G])([\d\.]+)([\'])([\d\.]+)([\']+)([NSEW])/', $str, $result, 0);
+    if ($_val == NULL) return NULL;
+    preg_match('/(.*)([G])([\d\.]+)([\'])([\d\.]+)([\']+)([NSEW])/', $_val, $result, 0);
     return array("deg"=>$result[1],"min"=>$result[3],"sec"=>$result[5],"dir"=>$result[7]);
   }
 
   private function DMStoSTR($_val)
   {
+    if ($_val == NULL || !isset($_val['deg']) || !isset($_val['min']) || !isset($_val['sec']) || !isset($_val['dir'])) return NULL;
     return sprintf("%dG%d'%g''%s",$_val['deg'],$_val['min'],$_val['sec'],$_val['dir']);
   }
 
@@ -90,6 +94,7 @@ class Tracker{
 
   // LonDMS
   public function getLonDMS(){
+    if ($this->lon == NULL) return NULL;
     $result = $this->DDtoDMS($this->lon);
     $result['dir'] = ($this->lon>0 ? 'N' : 'S');
     return $result;
@@ -122,6 +127,7 @@ class Tracker{
 
   // LatDMS
   public function getLatDMS(){
+    if ($this->lat == NULL) return NULL;
     $result = $this->DDtoDMS($this->lat);
     $result['dir'] = ($this->lat>0 ? 'E' : 'W');
     return $result;
@@ -148,6 +154,12 @@ class Tracker{
   }
   public function setGSM($_val){
     $this->gsm = $_val;
+  }
+
+
+  // Check GPS data
+  public function validGPS(){
+    return (isset($this->lat) && isset($this->lon) ? true : false);
   }
   
 }

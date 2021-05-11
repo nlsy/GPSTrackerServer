@@ -8,8 +8,6 @@
 require_once('config.php');
 require_once('caTracker.php');
 
-//var_dump((object)$_GET);
-
 // Check if parameters are attached
 if(!empty($_GET)){
   $tracker = new Tracker();
@@ -31,12 +29,11 @@ if(!empty($_GET)){
   // s: seconds 00-59, with leading 0
   $tracker->setGPSTime(substr_replace(substr_replace(strtok($_GET['gpstime'],'.'), ':', 4, 0), ':',2,0));
   
-  // get lon
-  $tracker->setLonString($_GET['lon']);
+  // set longitude
+  $tracker->setLonString(isset($_GET['lon']) ? $_GET['lon'] : NULL);
   
-  // get lat
-  $tracker->setLatString($_GET['lat']);
-  print($tracker->getLatString());
+  // set latitude
+  $tracker->setLatString(isset($_GET['lat']) ? $_GET['lat'] : NULL);
 
   // gsm data
   $tracker->setGSM($_GET);
@@ -45,8 +42,10 @@ if(!empty($_GET)){
   exit('No data attached');
 }
 
-print("<br><br>");
 var_dump($tracker);
+print("<br><br>");
+
+if(!$tracker->validGPS()) exit('GPS data is not valid.');
 
 // Connect to DB
 $dsn = sprintf("mysql:host=%s;dbname=%s;charset=%s", DBHOST, DBNAME, DBCHARSET);
