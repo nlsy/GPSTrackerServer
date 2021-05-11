@@ -18,6 +18,9 @@
 
 #MONI: Cell BSIC LAC CellId ARFCN Power C1 C2 (Ta RxQual PLMN)
 
+TA: Timing Advance
+RxQual: Receiver Quality (depending on bit errors)
+PLMN: Public Land Mobile Network (MCC & MNC = 5 digits)
 BSIC: Base Station Identity Code
 LAC: Location Area Code (59168)
 CID: CellId
@@ -25,6 +28,25 @@ ARFCN: Absolute radio-frequency channel number (for calculating frequencies http
 
 
 MCC (Mobile Country Code): 262 (Germany)
-MNC (Mobile  Code): 3 (o2)
+MNC (Mobile  Code): 3 (o2 - eplus)
 
 https://www.rui.de/eng/nobbiglossar.html
+
+-----
+BSIC = NCC + BCC (Network Colour Code + Base Colour Code)
+It contains 8 bits and is Primarily used to differentiate between operators utilizing the same frequencies.
+
+There are 4 basic parts of a cell identifier: MCC-MNC-LAC-CID
+MCC-MNC is set by International Telecommunication Union. All telecom firms have access to this information as it is publicly available. 23
+LAC-CID can be decided by the telecom firm. This is an internal decision and telecom firms don’t share this with each other
+
+LAC:
+This is decided by a telecom firm based on its own logic. Some telecom firms decide on LAC by region, others by a cluster. If a large amount of CID’s belonging to a particular telecom firm are in a particular area, all these will likely have the same LAC. This helps telecom firms organize information.
+CID:
+This is a unique id assigned to a physical cell unit.
+
+-----
+http://wiki.opencellid.org/wiki/API#Getting_cell_position
+
+https://my.opencellid.org/dashboard/login?ref=opencellid
+API key: pk.24e12ebd4dc6da618d6cc621ab058f34 (ErstaunlichZaghafterSkorpion@datenschutz.ru, )
