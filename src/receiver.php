@@ -8,9 +8,10 @@
 require_once('config.php');
 require_once('caTracker.php');
 
+$tracker = new Tracker();
+
 // Check if parameters are attached
 if(!empty($_GET)){
-  $tracker = new Tracker();
   //foreach ($_GET as $key => $value){
   //  $tracker->$key = $value;
   //}
@@ -42,8 +43,7 @@ if(!empty($_GET)){
   exit('No data attached');
 }
 
-var_dump($tracker);
-print("<br><br>");
+//var_dump($tracker);
 
 if(!$tracker->validGPS()) exit('GPS data is not valid.');
 
@@ -58,6 +58,21 @@ $options = [
 
 try {
   $pdo = new PDO($dsn, DBUSER, DBPASS, $options);
+
+  // Getting the strings
+  $serial = (!empty($tracker->getSerial()) ? "'".$tracker->getSerial()."'" : "NULL");
+  $datetime = (!empty($tracker->getDateTime()) ? "'".$tracker->getDateTime()."'" : "NULL");
+  $gpstime = (!empty($tracker->getGPSTime()) ? "'".$tracker->getGPSTime()."'" : "NULL");
+  $lat = (!empty($tracker->getLatDD()) ? "'".$tracker->getLatDD()."'" : "NULL");
+  $lon = (!empty($tracker->getLonDD()) ? "'".$tracker->getLonDD()."'" : "NULL");
+  $gsm = (!empty($tracker->getGSM()) ? "'".$tracker->getGSM()."'" : "NULL");
+  // Creating the SQL
+  $sql = "INSERT INTO `trackerdata_test` (`id`, `serial`, `datetime`, `gpstime`, `lat`, `lon`, `gsm`) VALUES (NULL, $serial, $datetime, $gpstime, $lat, $lon, $gsm)";
+  $request = $pdo->prepare($sql);
+  $request->execute();
+
+
+
 } catch (Exception $e) {
   error_log($e->getMessage());
   exit('Error occured'); //something a user can understand

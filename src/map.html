@@ -27,8 +27,8 @@
           <tbody id="data_items">
             <tr class="item" id="proto_item">
               <td class="col-1">1</td>
-              <td class="col-3">No Data</td>
               <td class="col-2">No Data</td>
+              <td class="col-3">No Data</td>
               <td class="col-2">No Data</td>
               <td class="col-2">No Data</td>
               <td class="col-2">No Data</td>
@@ -44,6 +44,7 @@
   </script>
   <script>
     var map;
+    var markers = [];
 
     function initMap(){
       // Map options
@@ -58,16 +59,60 @@
       const marker = new google.maps.Marker({
         position: {lat: 47.8141353, lng: 9.6538979},
         map: map,
+        title: "RWU",
       });
+    }
+
+    // Adds a marker to the map and push to the array.
+    function addMarker(title, location) {
+      const marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        title: title,
+      });
+      markers.push(marker);
+    }
+
+    // Sets the map on all markers in the array.
+    function setMapOnAll(map) {
+      for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+      }
+    }
+
+    // Removes the markers from the map, but keeps them in the array.
+    function clearMarkers() {
+      setMapOnAll(null);
+    }
+
+    // Shows any markers currently in the array.
+    function showMarkers() {
+      setMapOnAll(map);
+    }
+
+    // Deletes all markers in the array by removing references to them.
+    function deleteMarkers() {
+      clearMarkers();
+      markers = [];
+    }
+
+    // Deletes all markers in the array by removing references to them.
+    function deleteMarker(title) {
+      clearMarkers();
+      markers.splice([markers.findIndex(element => element.title == title)], 1);
+      setMapOnAll(map);
     }
   </script>
   <script>
     var xmlhttp = new XMLHttpRequest();
+    var pubList;
 
     xmlhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         myObj = JSON.parse(this.responseText);
         console.log(myObj);
+        get(myObj);
+        pubList = myObj;
       }
     };
     xmlhttp.open("GET", "data_bridge.php", true);
@@ -75,26 +120,36 @@
   </script>
   <script>
     const datatable = document.querySelector('#data_items');
-    get();
+    //get();
     
     function get(buffer){
       document.getElementById("proto_item").remove();
 
-      for(var i = 0; i<30; i++){
+      //for(var i = 0; i<30; i++){
+      for(var i = 0; i<Object.keys(buffer).length; i++){
         datatable.insertAdjacentHTML("beforeend", `
-        <tr class="item" onclick="activate('item_${i}')" id="item_${i}">
-          <td class="col-1">${i}</td>
-          <td class="col-3">NULL</td>
-          <td class="col-2">NULL</td>
-          <td class="col-2">NULL</td>
-          <td class="col-2">NULL</td>
-          <td class="col-2">NULL</td>
+        <tr class="item" onclick="activate('${i}')" id="${i}">
+          <td class="col-1">${buffer[i].id}</td>
+          <td class="col-2">${buffer[i].serial}</td>
+          <td class="col-3">${buffer[i].datetime}</td>
+          <td class="col-2">${buffer[i].gpstime}</td>
+          <td class="col-2">${buffer[i].lon}</td>
+          <td class="col-2">${buffer[i].lat}</td>
         </tr>`);
       }
     }
     function activate(element){
       //document.getElementById(element).insertAdjacentHTML(, "active");
       document.getElementById(element).classList.toggle('active');
+      
+      if (document.getElementById(element).classList.contains('active')){
+        var position = {lat: pubList[element].lat, lng: pubList[element].lon};
+        addMarker("id"+pubList[element].id,position);
+        map.panTo(position);
+        map.setZoom(8);
+      } else{
+        deleteMarker("id"+pubList[element].id);
+      }
     }
   </script>
 </body>
