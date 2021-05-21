@@ -12,10 +12,6 @@ $tracker = new Tracker();
 
 // Check if parameters are attached
 if(!empty($_GET)){
-  //foreach ($_GET as $key => $value){
-  //  $tracker->$key = $value;
-  //}
-
   // serialnumber
   $tracker->setSerial(isset($_GET['serial']) ? $_GET['serial'] : NULL);
 
@@ -37,7 +33,7 @@ if(!empty($_GET)){
   $tracker->setLatString(isset($_GET['lat']) ? $_GET['lat'] : NULL);
 
   // gsm data
-  $tracker->setGSM($_GET);
+  $tracker->setGSM($_GET['gsm']);
 
 }else{
   exit('No data attached');
@@ -65,7 +61,7 @@ try {
   $gpstime = (!empty($tracker->getGPSTime()) ? "'".$tracker->getGPSTime()."'" : "NULL");
   $lat = (!empty($tracker->getLatDD()) ? "'".$tracker->getLatDD()."'" : "NULL");
   $lon = (!empty($tracker->getLonDD()) ? "'".$tracker->getLonDD()."'" : "NULL");
-  $gsm = (!empty($tracker->getGSM()) ? "'".$tracker->getGSM()."'" : "NULL");
+  $gsm = (!empty($tracker->getGSM()) ? "'".json_encode($tracker->getGSM())."'" : "NULL");
   // Creating the SQL
   $sql = "INSERT INTO `trackerdata_test` (`id`, `serial`, `datetime`, `gpstime`, `lat`, `lon`, `gsm`) VALUES (NULL, $serial, $datetime, $gpstime, $lat, $lon, $gsm)";
   $request = $pdo->prepare($sql);
@@ -75,7 +71,7 @@ try {
 
 } catch (Exception $e) {
   error_log($e->getMessage());
-  exit('Error occured'); //something a user can understand
+  exit('Error occured: '.$e->getMessage()); //something a user can understand
 }
 
 ?>
