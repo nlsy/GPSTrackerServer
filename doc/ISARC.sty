@@ -1,0 +1,169 @@
+\usepackage[utf8]{inputenc}
+\usepackage[top=3.5cm,bottom=3.5cm,left=2.5cm,right=2.0cm]{geometry}
+\usepackage{newtxtext,newtxmath}
+\usepackage{latexsym}
+\usepackage{indentfirst}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{graphicx,subfigure}
+%\usepackage{doi}
+%\newcommand*{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
+
+%modified by simbaforrest (cfeng@nyu.edu), 02/24/2021
+%add automatic conference ID and Year:
+%ref: https://tex.stackexchange.com/a/96599
+\newcommand{\ISARCSeqID}{\number\numexpr\year-1983\relax~}
+\newcommand{\ISARCConference}{\ISARCSeqID$^{th}$ International Symposium on Automation and Robotics in Construction (ISARC \the\year)}
+\newcommand{\ISARCTopic}{Conference Topic}
+
+\fancyhead{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[CO]{\ISARCConference}
+\fancyhead[CE]{\ISARCConference}
+%\fancyfoot[C]{\thepage}
+\setlength{\headheight}{12.25pt}
+
+\usepackage[numbers]{natbib}
+\bibliographystyle{unsrtnat}
+
+\RequirePackage{doi}
+\usepackage{hyperref}
+%\usepackage{breakurl}
+
+
+\def\@maketitle
+   {%  
+   \newpage
+   \renewcommand{\arraystretch}{1.2}
+   \begin{center}
+      {
+	  \LARGE \bf 
+	  \@title 
+	  \par
+	  }
+      % additional two empty lines at the end of the title
+	  \normalsize
+      \vspace*{0.2in} % What about 2em instead?
+      {
+      %\normalsize
+      \vspace*{0.05in}
+      %\begin{tabular}[t]{c} %this causes problems with formatting when the authors' names do not fit within one line
+         \bf \large \@author
+      %\end{tabular}
+      \par
+      }
+      % additional small space at the end of the author name
+      \vspace*{0.8em}
+      {
+      \normalsize
+      \begin{tabular}[t]{c}
+         \@affiliation
+      \end{tabular}
+      \par
+      \vspace*{0.8em}
+      \ifx \@empty \@email
+      \else
+         \begin{tabular}{r@{~}l}
+            {\@email}
+         \end{tabular}
+         \par
+      \fi
+      }
+      % additional empty line at the end of the title block
+      \vspace*{0.1in} % What about 1em instead?
+   \end{center}
+   \renewcommand{\arraystretch}{0.833}
+   }
+
+   
+\def\abstract
+   {%
+   \leftline{\normalsize \bf Abstract - }%
+   \bf\small
+   }
+
+\def\endabstract
+   {
+   % additional empty line at the end of the abstract
+   \vspace*{0.1in}% What about 1em instead?%
+   }
+
+
+\def\keywords
+   {%
+   \leftline{\normalsize\bf Keywords - }%
+   %% two spaces in fist line of each paragraph
+   \bf\small
+   }
+
+\def\endkeywords
+{
+% additional empty line at the end of the abstract
+   \vspace*{0.1in}% What about 1em instead?%
+}
+
+
+\def\affiliation#1{\gdef\@affiliation{#1}} 
+\gdef\@affiliation{}
+
+\def\email#1{\gdef\@email{#1}} 
+\gdef\@email{}
+
+
+
+% figure and table captions:
+\newlength{\@ctmp}
+\newlength{\@figindent}
+\setlength{\@figindent}{1pc}
+
+\long\def\@makecaption#1#2{
+   \vskip 10pt % use em instead?
+   \setbox\@tempboxa\hbox{\noindent #1.~#2}
+   \setlength{\@ctmp}{\hsize}
+   \addtolength{\@ctmp}{-\@figindent}\addtolength{\@ctmp}{-\@figindent}
+   % WHY DO THE FOLLOWING. INCONSISTENT WITH MS TEMPLATE
+   % IF longer than one indented paragraph line
+   \ifdim \wd\@tempboxa >\@ctmp
+      % THEN set as an indented paragraph
+      \begin{list}{}{\leftmargin\@figindent \rightmargin\leftmargin}
+         \item[]#1.~#2\par
+      \end{list}
+   \else
+      % ELSE center
+      \hbox to\hsize{\hfil\box\@tempboxa\hfil}
+   \fi}
+
+
+   
+% correct heading spacing and type
+\def\section{\@startsection {section}{1}{\z@}
+   {18pt plus 2pt minus 2pt}{6pt plus 1pt minus 1pt}
+   { \fontsize{11pt}\baselineskip\selectfont \bf }}
+   
+\def\subsection{\@startsection {subsection}{2}{\z@} 
+   {12pt plus 2pt minus 2pt}{6pt plus 1pt minus 1pt} 
+   { \fontsize{11pt}\baselineskip\selectfont }}
+
+\def\subsubsection{\@startsection {subsubsection}{3}{\z@} 
+   {6pt plus 1pt minus 1pt}{6pt plus 1pt minus 1pt} 
+   { \fontsize{11pt}\baselineskip\selectfont }}
+
+
+% add the period after section numbers
+\newcommand{\Section}[1]{\section{\hskip -1em.~\hspace{1.5ex}#1  }}
+\newcommand{\SubSection}[1]{\subsection{\hskip -1em.~\hspace{1.5ex}#1}}
+
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                   {1.5ex \@plus .2ex}%
+                                   {\normalfont\large\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
