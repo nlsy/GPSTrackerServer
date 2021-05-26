@@ -11,7 +11,9 @@
 <body>
   <div class="container">
     <div class="row">
+      <!-- google maps -->
       <div class="col-12" id="map"></div>
+      <!-- table for data -->
       <div class="col-12">
         <table class="table table-fixed" id="datatable">
           <thead>
@@ -25,6 +27,7 @@
             </tr>
           </thead>
           <tbody id="data_items">
+            <!-- sample item -->
             <tr class="item" id="proto_item">
               <td class="col-1">1</td>
               <td class="col-2">No Data</td>
@@ -55,7 +58,7 @@
       // New Map
       map = new google.maps.Map(document.getElementById('map'), options);
       
-      // Marker
+      // Marker of RWU
       const marker = new google.maps.Marker({
         position: {lat: 47.8141353, lng: 9.6538979},
         map: map,
@@ -125,7 +128,7 @@
     function get(buffer){
       document.getElementById("proto_item").remove();
 
-      //for(var i = 0; i<30; i++){
+      // itterate over the data and add it to list
       for(var i = 0; i<Object.keys(buffer).length; i++){
         datatable.insertAdjacentHTML("beforeend", `
         <tr class="item" onclick="activate('${i}')" id="${i}">
@@ -138,6 +141,7 @@
         </tr>`);
       }
     }
+    // if on list item is clicked
     function activate(element){
       //document.getElementById(element).insertAdjacentHTML(, "active");
       document.getElementById(element).classList.toggle('active');
