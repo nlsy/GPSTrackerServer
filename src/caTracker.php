@@ -29,7 +29,7 @@ class Tracker{
       if ($_val == NULL) return NULL;
       // Converts decimal format to DMS ( Degrees / minutes / seconds ) 
       $vars = explode(".",$_val);
-      $deg = $vars[0];
+      $deg = (float)$vars[0];
       $tempma = "0.".$vars[1];
 
       $tempma = $tempma * 3600;
@@ -42,7 +42,8 @@ class Tracker{
   private function STRtoDMS($_val)
   {
     if ($_val == NULL) return NULL;
-    preg_match('/(.*)([G])([\d\.]+)([\'])([\d\.]+)([\']+)([NSEW])/', $_val, $result, 0);
+    $_val = filter_var($_val, FILTER_SANITIZE_STRING);
+    preg_match('/(.*)([G])([\d\.]+)([&#39;]+)([\d\.]+)([&#39;]+)([NSEW])/', $_val, $result, 0);
     return array("deg"=>$result[1],"min"=>$result[3],"sec"=>$result[5],"dir"=>$result[7]);
   }
 
@@ -83,9 +84,10 @@ class Tracker{
 
 
   // LonString
+  // e.g. lon: 10G38'43.8''E
   public function getLonString(){
     $result = $this->DDtoDMS($this->lon);
-    $result['dir'] = ($this->lon>0 ? 'N' : 'S');
+    $result['dir'] = ($this->lon>0 ? 'E' : 'W');
     return $this->DMStoSTR($result);
   }
   public function setLonString($_val){
@@ -93,20 +95,20 @@ class Tracker{
   }
 
   // LonDMS
+  // e.g. lon: array(4){["deg"]=>float(10) ["min"]=>float(38), ["sec"]=>float(43.8) ["dir"]=>string(1)"E"}
   public function getLonDMS(){
     if ($this->lon == NULL) return NULL;
     $result = $this->DDtoDMS($this->lon);
-    $result['dir'] = ($this->lon>0 ? 'N' : 'S');
+    $result['dir'] = ($this->lon>0 ? 'E' : 'W');
     return $result;
   }
   // $_val = [$deg,$min,$sec,$dir]
   public function setLonDMS($_val){
-    //$input = $this->DMStoDD($_val['deg'],$_val['min'],$_val['sec'],$_val['dir']);
-    //$this->lon = ($_val['dir']=='N' ? $input : $input*-1);
     $this->lon = $this->DMStoDD($_val);
   }
 
   // LonDD
+  // e.g. lon: 9.6538979
   public function getLonDD(){
     return $this->lon;
   }
@@ -116,9 +118,10 @@ class Tracker{
 
 
   // LatString
+  // e.g. lat: 50G48'29.4''N
   public function getLatString(){
     $result = $this->DDtoDMS($this->lat);
-    $result['dir'] = ($this->lat>0 ? 'E' : 'W');
+    $result['dir'] = ($this->lat>0 ? 'N' : 'S');
     return $this->DMStoSTR($result);
   }
   public function setLatString($_val){
@@ -126,20 +129,20 @@ class Tracker{
   }
 
   // LatDMS
+  // e.g. lat: array(4){["deg"]=>float(50) ["min"]=>float(48), ["sec"]=>float(29.4) ["dir"]=>string(1)"N"}
   public function getLatDMS(){
     if ($this->lat == NULL) return NULL;
     $result = $this->DDtoDMS($this->lat);
-    $result['dir'] = ($this->lat>0 ? 'E' : 'W');
+    $result['dir'] = ($this->lat>0 ? 'N' : 'S');
     return $result;
   }
   // $_val = [$deg,$min,$sec,$dir]
   public function setLatDMS($_val){
-    //$input = $this->DMStoDD($_val['deg'],$_val['min'],$_val['sec'],$_val['dir']);
-    //$this->lat = ($_val['dir']=='E' ? $input : $input*-1);
     $this->lat = $this->DMStoDD($_val);
   }
 
   // LatDD
+  // e.g. lat: 47.8141353
   public function getLatDD(){
     return $this->lat;
   }
@@ -160,6 +163,11 @@ class Tracker{
   // Check GPS data
   public function validGPS(){
     return (isset($this->lat) && isset($this->lon) ? true : false);
+  }
+
+  // Check GSM data
+  public function validGSM(){
+    return (isset($this->gsm) ? true : false);
   }
   
 }
