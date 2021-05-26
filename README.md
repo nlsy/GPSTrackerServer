@@ -2,7 +2,7 @@
 This repository contains a Server for a GPS/GSM Tracker.
 
 ## Getting started
-The `config_sample.php` file has to be renamed to `config.php`. It contains all the needed settings.
+The `config.php.sample` file has to be renamed to `config.php`. It contains all the needed settings.
 
 ## General description
 
