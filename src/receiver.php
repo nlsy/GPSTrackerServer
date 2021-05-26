@@ -8,70 +8,84 @@
 require_once('config.php');
 require_once('caTracker.php');
 
+// this sanitizes all gets/posts for security (prevent XSS)
+$_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
+$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+// create new object tracker
 $tracker = new Tracker();
 
-// Check if parameters are attached
+// check if parameters are attached
 if(!empty($_GET)){
-  // serialnumber
-  $tracker->setSerial(isset($_GET['serial']) ? $_GET['serial'] : NULL);
+  try {
 
-  // server datetime
-  $tracker->setDateTime(date('Y-m-d H:i:s'));
+    // serialnumber
+    $tracker->setSerial(isset($_GET['serial']) ? $_GET['serial'] : NULL);
 
-  // gps time
-  // example 112233.0
-  // if no position information available 0.0
-  // H: hour 00-23, with leading 0
-  // i: minuts 00-59, with leading 0
-  // s: seconds 00-59, with leading 0
-  $tracker->setGPSTime(substr_replace(substr_replace(strtok($_GET['gpstime'],'.'), ':', 4, 0), ':',2,0));
-  
-  // set longitude
-  $tracker->setLonString(isset($_GET['lon']) ? $_GET['lon'] : NULL);
-  
-  // set latitude
-  $tracker->setLatString(isset($_GET['lat']) ? $_GET['lat'] : NULL);
+    // server datetime
+    $tracker->setDateTime(date('Y-m-d H:i:s'));
 
-  // gsm data
-  $tracker->setGSM($_GET['gsm']);
+    // gps time
+    // example 112233.0
+    // if no position information available 0.0
+    // H: hour 00-23, with leading 0
+    // i: minuts 00-59, with leading 0
+    // s: seconds 00-59, with leading 0
+    $tracker->setGPSTime(substr_replace(substr_replace(strtok($_GET['gpstime'],'.'), ':', 4, 0), ':',2,0));
+    
+    // set longitude
+    $tracker->setLonString(isset($_GET['lon']) ? $_GET['lon'] : NULL);
+    
+    // set latitude
+    $tracker->setLatString(isset($_GET['lat']) ? $_GET['lat'] : NULL);
+
+    // gsm data
+    $tracker->setGSM($_GET['gsm']);
+
+  } catch (Exception $e) {
+    error_log($e->getMessage());
+    exit('Error with received data'); //something a user can understand
+  }
 
 }else{
   exit('No data attached');
 }
 
-//var_dump($tracker);
-
+// check if the tracker object has GPS data
 if(!$tracker->validGPS()) exit('GPS data is not valid.');
 
-// Connect to DB
+// connect to DB
 $dsn = sprintf("mysql:host=%s;dbname=%s;charset=%s", DBHOST, DBNAME, DBCHARSET);
 
 $options = [
-  PDO::ATTR_EMULATE_PREPARES   => false, // turn off emulation mode for "real" prepared statements
-  PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
-  PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //make the default fetch be an associative array
+  // turn off emulation mode for "real" prepared statements
+  PDO::ATTR_EMULATE_PREPARES   => false,
+  // turn on errors in the form of exceptions
+  PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+  // make the default fetch be an associative array
+  PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 ];
 
 try {
+  // creating the pdo object
   $pdo = new PDO($dsn, DBUSER, DBPASS, $options);
 
-  // Getting the strings
-  $serial = (!empty($tracker->getSerial()) ? "'".$tracker->getSerial()."'" : "NULL");
-  $datetime = (!empty($tracker->getDateTime()) ? "'".$tracker->getDateTime()."'" : "NULL");
-  $gpstime = (!empty($tracker->getGPSTime()) ? "'".$tracker->getGPSTime()."'" : "NULL");
-  $lat = (!empty($tracker->getLatDD()) ? "'".$tracker->getLatDD()."'" : "NULL");
-  $lon = (!empty($tracker->getLonDD()) ? "'".$tracker->getLonDD()."'" : "NULL");
-  $gsm = (!empty($tracker->getGSM()) ? "'".json_encode($tracker->getGSM())."'" : "NULL");
-  // Creating the SQL
-  $sql = "INSERT INTO `trackerdata_test` (`id`, `serial`, `datetime`, `gpstime`, `lat`, `lon`, `gsm`) VALUES (NULL, $serial, $datetime, $gpstime, $lat, $lon, $gsm)";
+  // creating the SQL
+  $sql = "INSERT INTO `trackerdata_test` (`id`, `serial`, `datetime`, `gpstime`, `lat`, `lon`, `gsm`) VALUES (NULL, :serial, :datetime, :gpstime, :lat, :lon, :gsm)";
   $request = $pdo->prepare($sql);
-  $request->execute();
-
-
+  $data = [':serial'   => $tracker->getSerial(),
+           ':datetime' => $tracker->getDateTime(),
+           ':gpstime'  => $tracker->getGPSTime(),
+           ':lat'      => $tracker->getLatDD(),
+           ':lon'      => $tracker->getLonDD(),
+           ':gsm'      => $tracker->getGSM()];
+  $request->execute($data);
 
 } catch (Exception $e) {
   error_log($e->getMessage());
   exit('Error occured: '.$e->getMessage()); //something a user can understand
 }
+
+echo "Data received & stored";
 
 ?>
