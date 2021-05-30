@@ -29,7 +29,7 @@ try {
   $pdo = new PDO($dsn, DBUSER, DBPASS, $options);
 
   // creating the SQL & exetuting
-  $tablename = "trackerdata_".$_GET["key"];
+  $tablename = "trackerdata_".(isset($_GET["key"]) ? $_GET["key"] : "");
   $request = $pdo->prepare("SELECT * FROM `$tablename` ORDER BY id ASC");
   $request->execute();
   $result = $request->fetchAll();
