@@ -1,5 +1,6 @@
 #
 config.php
+mapsconfig.js
 doc/GPSTrackerServer.toc
 doc/GPSTrackerServer.synctex.gz
 doc/GPSTrackerServer.out
