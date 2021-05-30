@@ -1,10 +1,8 @@
 <?php
 /*  
  *  Responsible for receiving and storing data
- * 
- *  GPS-Data: DMS (degrees, minutes, seconds)
- * 
  */
+
 require_once('config.php');
 require_once('caTracker.php');
 
@@ -31,6 +29,7 @@ if(!empty($_GET)){
     // H: hour 00-23, with leading 0
     // i: minuts 00-59, with leading 0
     // s: seconds 00-59, with leading 0
+    // needed 11:22:33
     $tracker->setGPSTime(substr_replace(substr_replace(strtok($_GET['gpstime'],'.'), ':', 4, 0), ':',2,0));
     
     // set longitude
@@ -70,11 +69,24 @@ try {
   // creating the pdo object
   $pdo = new PDO($dsn, DBUSER, DBPASS, $options);
 
-  // creating the SQL
-  $sql = "INSERT INTO `trackerdata_test` (`id`, `serial`, `datetime`, `gpstime`, `lat`, `lon`, `gsm`) VALUES (NULL, :serial, :datetime, :gpstime, :lat, :lon, :gsm)";
+  // create table if not existing
+  $tablename = "trackerdata_".$tracker->getSerial();
+  $sql = "CREATE TABLE IF NOT EXISTS `$tablename` (
+    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
+    `datetime` DATETIME NOT NULL ,
+    `gpstime` TIME NOT NULL ,
+    `lat` DOUBLE NOT NULL ,
+    `lon` DOUBLE NOT NULL ,
+    `gsm` TEXT NULL ,
+    PRIMARY KEY (`id`)
+  ) ENGINE = InnoDB;";
   $request = $pdo->prepare($sql);
-  $data = [':serial'   => $tracker->getSerial(),
-           ':datetime' => $tracker->getDateTime(),
+  $request->execute();
+
+  // creating the SQL & exetuting
+  $sql = "INSERT INTO `$tablename` (`id`, `datetime`, `gpstime`, `lat`, `lon`, `gsm`) VALUES (NULL, :datetime, :gpstime, :lat, :lon, :gsm)";
+  $request = $pdo->prepare($sql);
+  $data = [':datetime' => $tracker->getDateTime(),
            ':gpstime'  => $tracker->getGPSTime(),
            ':lat'      => $tracker->getLatDD(),
            ':lon'      => $tracker->getLonDD(),
