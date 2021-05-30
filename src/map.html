@@ -18,18 +18,19 @@
         <table class="table table-fixed" id="datatable">
           <thead>
             <tr>
+              <!-- column description -->
               <th class="col-1">#</th>
-              <th class="col-2">Serial Number</th>
               <th class="col-3">Server DateTime</th>
               <th class="col-2">Satellite Time</th>
               <th class="col-2">Longitude</th>
               <th class="col-2">Latitude</th>
+              <th class="col-2">GSM Data</th>
             </tr>
           </thead>
           <tbody id="data_items">
             <!-- sample item -->
             <tr class="item" id="proto_item">
-              <td class="col-1">1</td>
+              <td class="col-1">0</td>
               <td class="col-2">No Data</td>
               <td class="col-3">No Data</td>
               <td class="col-2">No Data</td>
@@ -42,8 +43,8 @@
       </div>
     </div>
   </div>
-  <script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDk0kR18tUOECtGNTSeOAwy99IsvStX3pE&callback=initMap">
+  <script async defer src="mapsconfig.js">
+    // external file that contains the Google maps API key
   </script>
   <script>
     var map;
@@ -123,8 +124,8 @@
   </script>
   <script>
     const datatable = document.querySelector('#data_items');
-    //get();
     
+    // print items to the table
     function get(buffer){
       document.getElementById("proto_item").remove();
 
@@ -133,11 +134,11 @@
         datatable.insertAdjacentHTML("beforeend", `
         <tr class="item" onclick="activate('${i}')" id="${i}">
           <td class="col-1">${buffer[i].id}</td>
-          <td class="col-2">${buffer[i].serial}</td>
           <td class="col-3">${buffer[i].datetime}</td>
           <td class="col-2">${buffer[i].gpstime}</td>
           <td class="col-2">${buffer[i].lon}</td>
           <td class="col-2">${buffer[i].lat}</td>
+          <td class="col-2">${buffer[i].gsm}</td>
         </tr>`);
       }
     }
