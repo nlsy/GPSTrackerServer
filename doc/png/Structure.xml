@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="www.diagrameditor.com" modified="2021-05-31T12:59:51.554Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36 OPR/76.0.4017.123" etag="fzjx_FkVChoELpA1yQXG" version="12.1.3" type="device" pages="1">
+  <diagram name="Page-1" id="efa7a0a1-bf9b-a30e-e6df-94a7791c09e9">
+    <mxGraphModel dx="2008" dy="1143" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="qmc7mqvBtzKFVNj1ToBm-129" value="Backend" style="shape=umlFrame;whiteSpace=wrap;html=1;rounded=1;shadow=1;width=70;height=30;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="290" height="290" as="geometry"/>
+        </mxCell>
+        <mxCell id="qmc7mqvBtzKFVNj1ToBm-130" value="Frontend" style="shape=umlFrame;whiteSpace=wrap;html=1;rounded=1;shadow=1;width=70;height=30;" vertex="1" parent="1">
+          <mxGeometry x="40" y="350" width="290" height="260" as="geometry"/>
+        </mxCell>
+        <mxCell id="qmc7mqvBtzKFVNj1ToBm-115" value="Database&lt;br&gt;trackerdata_table.sql" style="shape=datastore;whiteSpace=wrap;html=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="230" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="qmc7mqvBtzKFVNj1ToBm-119" value="Receiver&lt;br&gt;/receiver.php" style="rounded=1;whiteSpace=wrap;html=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="80" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="qmc7mqvBtzKFVNj1ToBm-120" value="Provider&lt;br&gt;/provider.php" style="rounded=1;whiteSpace=wrap;html=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="150" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="qmc7mqvBtzKFVNj1ToBm-121" value="Tracker Class&lt;br&gt;/caTracker.php" style="rounded=1;whiteSpace=wrap;html=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="80" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="qmc7mqvBtzKFVNj1ToBm-123" value="Google maps API key&lt;br&gt;/mapsconfig.js" style="rounded=1;whiteSpace=wrap;html=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="390" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="qmc7mqvBtzKFVNj1ToBm-124" value="Database Settings&lt;br&gt;/config.php" style="rounded=1;whiteSpace=wrap;html=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="150" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="qmc7mqvBtzKFVNj1ToBm-125" value="Website&lt;br&gt;/map.html" style="rounded=1;whiteSpace=wrap;html=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="390" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="qmc7mqvBtzKFVNj1ToBm-126" value="Stylesheet&lt;br&gt;/style.css" style="rounded=1;whiteSpace=wrap;html=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="460" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="qmc7mqvBtzKFVNj1ToBm-127" value="Bootstrap&lt;br&gt;-external-" style="rounded=1;whiteSpace=wrap;html=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="530" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="qmc7mqvBtzKFVNj1ToBm-128" value="jQuery&lt;br&gt;-external-" style="rounded=1;whiteSpace=wrap;html=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="530" width="120" height="60" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
