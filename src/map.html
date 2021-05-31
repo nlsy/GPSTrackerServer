@@ -45,6 +45,7 @@
     </div>
   </div>
   <script>
+    // Google maps handling
     var map;
     var markers = [];
 
@@ -57,7 +58,7 @@
       // New Map
       map = new google.maps.Map(document.getElementById('map'), options);
       
-      // Marker of RWU
+      // Permanent marker of RWU
       const marker = new google.maps.Marker({
         position: {lat: 47.8141353, lng: 9.6538979},
         map: map,
@@ -106,10 +107,13 @@
     }
   </script>
   <script>
+    // Get data request
     var xmlhttp = new XMLHttpRequest();
     var pubList;
 
+    // is beeing called when data is received
     xmlhttp.onreadystatechange = function() {
+      // check that no errors occur
       if (this.readyState == 4 && this.status == 200) {
         myObj = JSON.parse(this.responseText);
         console.log(myObj);
@@ -117,18 +121,23 @@
         pubList = myObj;
       }
     };
-    xmlhttp.open("GET", "data_bridge.php", true);
+    xmlhttp.open("GET", "provider.php", true);
     xmlhttp.send();
   </script>
   <script>
+    // Data management
+
+    // definign which element is datatable
     const datatable = document.querySelector('#data_items');
     
     // print items to the table
     function get(buffer){
+      // removes the placeholder item
       document.getElementById("proto_item").remove();
 
       // itterate over the data and add it to list
       for(var i = 0; i<Object.keys(buffer).length; i++){
+        // data gets insertet into table
         datatable.insertAdjacentHTML("beforeend", `
         <tr class="item" onclick="activate('${i}')" id="${i}">
           <td class="col-1">${buffer[i].id}</td>
