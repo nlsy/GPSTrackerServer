@@ -7,24 +7,22 @@
   overflow-y: auto;
   width: 100%;
 }
-.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
-  display: block;
-}
 .table-fixed tbody td, .table-fixed thead > tr > th {
   float: left;
   border-bottom-width: 0;
+  overflow: hidden;
 }
 
-.item{
+.data_item{
   cursor: pointer;
 }
 
-.active td{
-  background: rgb(151, 151, 151);
+.data_item:hover{
+  background: rgb(219, 219, 219);
 }
 
-.item:hover > td{
-  background: rgb(219, 219, 219);
+.active{
+  background: rgb(151, 151, 151);
 }
 
 #map{

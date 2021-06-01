@@ -14,6 +14,12 @@
     <div class="row">
       <!-- google maps -->
       <div class="col-12" id="map"></div>
+      <!-- serial number -->
+      <div class="input-group col-12">
+        <label for="serial" class="input-group-text">Serial number</label>
+        <input name="serial" id="serial_in" type="text" class="form-control" placeholder="serial number of tracker" value="" />
+        <input name="submit" id="submit_in" type="button" class="btn btn-outline-secondary" onclick="requestData()" value="Fetch Tracker Data" />
+      </div>
       <!-- table for data -->
       <div class="col-12">
         <table class="table table-fixed" id="datatable">
@@ -40,12 +46,11 @@
             </tr>
           </tbody>
         </table>
-        <div id=""></div>
       </div>
     </div>
   </div>
+  <!-- Google maps handling -->
   <script>
-    // Google maps handling
     var map;
     var markers = [];
 
@@ -59,11 +64,11 @@
       map = new google.maps.Map(document.getElementById('map'), options);
       
       // Permanent marker of RWU
-      const marker = new google.maps.Marker({
-        position: {lat: 47.8141353, lng: 9.6538979},
-        map: map,
-        title: "RWU",
-      });
+      //const marker = new google.maps.Marker({
+      //  position: {lat: 47.8141353, lng: 9.6538979},
+      //  map: map,
+      //  title: "RWU",
+      //});
     }
 
     // Adds a marker to the map and push to the array.
@@ -106,6 +111,7 @@
       setMapOnAll(map);
     }
   </script>
+  <!-- requesting tracker data -->
   <script>
     // Get data request
     var xmlhttp = new XMLHttpRequest();
@@ -115,40 +121,71 @@
     xmlhttp.onreadystatechange = function() {
       // check that no errors occur
       if (this.readyState == 4 && this.status == 200) {
-        myObj = JSON.parse(this.responseText);
-        console.log(myObj);
-        get(myObj);
+        myObj = {};
+        try {
+          myObj = JSON.parse(this.responseText);
+        }
+        catch {
+          console.log(this.responseText);
+        }
+        updateTable(myObj);
         pubList = myObj;
       }
     };
-    xmlhttp.open("GET", "provider.php?key=", true);
-    xmlhttp.send();
-  </script>
-  <script>
-    // Data management
 
+    function requestData(){
+      var providerUrl = "provider.php?serial=" + document.getElementById("serial_in").value;
+      xmlhttp.open("GET", providerUrl, true);
+      xmlhttp.send();
+    }
+  </script>
+  <!-- managing the table -->
+  <script>
     // definign which element is datatable
     const datatable = document.querySelector('#data_items');
-    
-    // print items to the table
-    function get(buffer){
-      // removes the placeholder item
-      document.getElementById("proto_item").remove();
 
+    // function to delete all elements usin a specific class
+    function removeElementsByClassName(elementClass){
+      var elementsToRemove = document.getElementsByClassName(elementClass);
+      for (var i=elementsToRemove.length-1; i>= 0; i--) {
+        var elementRemove = elementsToRemove[i];
+        elementRemove.remove();
+      }
+    }
+    // function to add tracker data to the table
+    function addTableDataItem(jsonDataItems){
       // itterate over the data and add it to list
-      for(var i = 0; i<Object.keys(buffer).length; i++){
+      for(var i = 0; i<Object.keys(jsonDataItems).length; i++){
         // data gets insertet into table
         datatable.insertAdjacentHTML("beforeend", `
-        <tr class="item" onclick="activate('${i}')" id="${i}">
-          <td class="col-1">${buffer[i].id}</td>
-          <td class="col-2">${buffer[i].datetime}</td>
-          <td class="col-1">${buffer[i].gpstime}</td>
-          <td class="col-2">${buffer[i].lon}</td>
-          <td class="col-2">${buffer[i].lat}</td>
-          <td class="col-4">${buffer[i].gsm}</td>
+        <tr class="data_item" onclick="activate('${i}')" id="${i}">
+          <td class="col-1">${jsonDataItems[i].id}</td>
+          <td class="col-2">${jsonDataItems[i].datetime}</td>
+          <td class="col-1">${jsonDataItems[i].gpstime}</td>
+          <td class="col-2">${jsonDataItems[i].lon}</td>
+          <td class="col-2">${jsonDataItems[i].lat}</td>
+          <td class="col-4">${jsonDataItems[i].gsm}</td>
         </tr>`);
       }
     }
+
+    // update items of the table
+    function updateTable(buffer){
+      deleteMarkers();
+      //removeChildren({parentId:'data_items',childName:'data_item'});
+      removeElementsByClassName('data_item');
+
+      // check if tracker has data - if not show only proto_item
+      if (jQuery.isEmptyObject(buffer)){
+        document.getElementById("proto_item").style.display = "table-row";
+        return;
+      }
+      // removes the placeholder item
+      document.getElementById("proto_item").style.display = "none";
+
+      addTableDataItem(buffer);
+    }
+
     // if on list item is clicked
     function activate(element){
       //document.getElementById(element).insertAdjacentHTML(, "active");
@@ -158,7 +195,7 @@
         var position = {lat: pubList[element].lat, lng: pubList[element].lon};
         addMarker("id"+pubList[element].id,position);
         map.panTo(position);
-        map.setZoom(8);
+        //map.setZoom(8);
       } else{
         deleteMarker("id"+pubList[element].id);
       }
