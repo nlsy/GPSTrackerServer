@@ -29,14 +29,14 @@ try {
   $pdo = new PDO($dsn, DBUSER, DBPASS, $options);
 
   // creating the SQL & exetuting
-  $tablename = "trackerdata_".(isset($_GET["key"]) ? $_GET["key"] : "");
+  $tablename = "trackerdata_".(isset($_GET["serial"]) ? $_GET["serial"] : "");
   $request = $pdo->prepare("SELECT * FROM `$tablename` ORDER BY id ASC");
   $request->execute();
   $result = $request->fetchAll();
 
 } catch (Exception $e) {
   error_log($e->getMessage());
-  exit('Error occured'); //something a user can understand
+  exit('Error occured: '.$e->getMessage()); //something a user can understand
 }
 
 // diplay data json encoded
