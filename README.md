@@ -2,7 +2,7 @@
 This repository contains a Server for a GPS/GSM Tracker.
 
 ## Getting started
-The `config.php.sample` file has to be renamed to `config.php`. It contains all the needed settings. Also the file `mapsconfig.js.sample` has to be renamed to `mapsconfig.js.` and the Google maps API key has to be added there.
+The `config.php.sample` file has to be renamed to `config.php`. It needs to contain all the needed settings for a database connection. Also the file `mapsconfig.js.sample` has to be renamed to `mapsconfig.js.` and the Google maps API key has to be added there.
 
 ## General description
 
