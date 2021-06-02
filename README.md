@@ -76,6 +76,7 @@ LAC-CID can be decided by the telecom firm. This is an internal decision and tel
 
 LAC:
 This is decided by a telecom firm based on its own logic. Some telecom firms decide on LAC by region, others by a cluster. If a large amount of CID’s belonging to a particular telecom firm are in a particular area, all these will likely have the same LAC. This helps telecom firms organize information.
+
 CID:
 This is a unique id assigned to a physical cell unit.
 
