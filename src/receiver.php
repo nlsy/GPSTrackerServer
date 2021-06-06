@@ -32,10 +32,10 @@ if(!empty($_GET)){
     // needed 11:22:33
     $tracker->setGPSTime(substr_replace(substr_replace(strtok($_GET['gpstime'],'.'), ':', 4, 0), ':',2,0));
     
-    // set longitude
+    // set longitude (received as a String WGS 84)
     $tracker->setLonString(isset($_GET['lon']) ? $_GET['lon'] : NULL);
     
-    // set latitude
+    // set latitude (received as a String WGS 84)
     $tracker->setLatString(isset($_GET['lat']) ? $_GET['lat'] : NULL);
 
     // gsm data
