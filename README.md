@@ -18,12 +18,29 @@ The `config.php.sample` file has to be renamed to `config.php`. It needs to cont
 ### Structure
 ```
 .
-├── doc                 # Documentation files
-├── src                 # Source files
-└── README.md
+├── doc                         # Documentation files
+│   ├── png                     # Folder with used pictures
+│   ├── TrackerServerDoc.pdf    # Documentation Word file
+│   ├── TrackerServerDoc.pdf    # Documentation PDF file
+├── src                         # Source files
+│   ├── caTracker.php           # Tracker class
+│   ├── config.php.sample       # Database config file
+│   ├── index.php               # Contains examples
+│   ├── map.html                # Website structure
+│   ├── mapsconfig.js.sample    # Google maps config file
+│   ├── provider.php            # Data provider
+│   ├── receiver.php            # Data receiver
+│   ├── style.css               # Style-sheet for website
+│   ├── tracker_table.sql       # Structure of a SQL tracker table
+├── .gitattributes              # gitattributes
+├── .gitignore                  # gitignore
+├── MPC2020.pdf                 # Publication from G. Benz, and A. Siggelkow
+├── ProjekteTrackerServer.pdf   # Project description
+└── README.md                   # ReadMe
 ```
 
 ### Data
+The Samples are copied from _G. Benz, and A. Siggelkow,”Implementation of a GPS and GSM module into a Zynq Z7 SoC based emulator tracking system“, MPC-WORKSHOP FEBRUAR 2020._
 #### Sample 1
 ```
 Satalite Time: 111418.0;
@@ -58,7 +75,7 @@ GPS Latitude: WGS 84;
 GSM-Localization: #MONI: Cell BSIC LAC CellId ARFCN Power C1 C2 (Ta RxQual PLMN)
 ```
 
-#### Terms
+### Terms
 - WGS 84: World Geodetic System 1984
 - TA: Timing Advance
 - RxQual: Receiver Quality (depending on bit errors)
@@ -80,7 +97,7 @@ This is decided by a telecom firm based on its own logic. Some telecom firms dec
 CID:
 This is a unique id assigned to a physical cell unit.
 
-Source: https://www.rui.de/eng/nobbiglossar.html
+Further information: https://www.rui.de/eng/nobbiglossar.html
 
 ## Authors
 - Sebastian Damian Romero Chavero, 32303
